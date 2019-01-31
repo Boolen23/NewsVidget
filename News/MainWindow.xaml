@@ -1,0 +1,119 @@
+﻿<Window x:Class="News.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vmlocal ="clr-namespace:News.ViewModels"
+        xmlns:local ="clr-namespace:News.View"
+        WindowStyle="None"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        AllowsTransparency="True"
+        ResizeMode="NoResize"  Background="#D83232dc"
+        Title="MainWindow" Height="550" Width="400"
+        MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" MouseMove="Window_MouseMove"
+        Loaded="Window_Loaded"
+       >
+    <Window.DataContext>
+        <vmlocal:MainViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <local:BoolenToCollapsedVisibility x:Key="CollapsedConverter"/>
+        <BooleanToVisibilityConverter x:Key="VisibleConverter"/>
+        <local:BindingProxy Data="{Binding StartBrowser}" x:Key="NavigateProxy"/>
+        <Style TargetType="Button" x:Key="ButtonStyle">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#33ffffff"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="myLBStyle" TargetType="{x:Type ListBoxItem}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Red"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadData}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Background="#00FFFFFF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Label Height="25">
+                <Hyperlink  Command="{Binding LoadData}">
+                    <TextBlock Text="Update" Foreground="White"/>
+                </Hyperlink>
+            </Label>
+        <local:BusyIndicator Width="20" Height="20"  Visibility="{Binding LoadData.IsExecuting, Converter={StaticResource VisibleConverter}}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Button Click="RollUp_Click" Width="20" Height="20" Style="{StaticResource ButtonStyle}" >
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid Background="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle Fill="Aqua" Height="2" Width="17" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,3"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Click="Right_Click" Width="20" Height="20" Style="{StaticResource ButtonStyle}" >
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid Background="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}">
+                            <Line Stroke="Aqua" StrokeThickness="2" X1="5" Y1="5" X2="16" Y2="16"/>
+                            <Line Stroke="Aqua" StrokeThickness="2" X1="15" Y1="10" X2="16" Y2="16"/>
+                            <Line Stroke="Aqua" StrokeThickness="2" X1="10" Y1="15" X2="16" Y2="16"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Click="Close_Click" Width="20" Height="20" Style="{StaticResource ButtonStyle}" >
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid Background="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}">
+                            <Line Stroke="Aqua" StrokeThickness="2" X1="5" Y1="5" X2="15" Y2="15"/>
+                            <Line Stroke="Aqua" StrokeThickness="2" X1="5" Y1="15" X2="15" Y2="5"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+        <ListBox Grid.Row="1" Background="Transparent" SelectedItem="{Binding SelectedNews, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding NewsFeed}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" BorderBrush="Transparent">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeave">
+                    <i:InvokeCommandAction Command="{Binding FreeDescription}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListBox.ItemTemplate>
+                <ItemContainerTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding Image}"/>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="{Binding Title}" Foreground="White" MaxWidth="300" TextWrapping="Wrap"/>
+                            <TextBlock x:Name="ee" Text="{Binding Description}" MaxWidth="300" TextWrapping="Wrap" Visibility="{Binding IsSelected, Converter={StaticResource CollapsedConverter}}" Foreground="White"/>
+                            <Label>
+                                <Hyperlink  Command="{Binding Data, Source={StaticResource NavigateProxy}}" CommandParameter="{Binding Link}">
+                                    <TextBlock Text="{Binding Link}" Foreground="White"/>
+                                </Hyperlink>
+                            </Label>
+                        </StackPanel>
+                    </Grid>
+                </ItemContainerTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
