@@ -27,8 +27,6 @@ namespace News
         {
             InitializeComponent();
             ShowInTaskbar = false;
-
-            //this.Background = new SolidColorBrush(Color.FromArgb(230, 50, 50, 220));
             Stream iconStream = Application.GetResourceStream(new Uri("pack://application:,,,/News;component/MyIco.ico")).Stream;
             notifyIcon = new System.Windows.Forms.NotifyIcon();
             notifyIcon.Click += new EventHandler(notifyIcon_Click);
@@ -130,7 +128,5 @@ namespace News
             this.Left = desktopWorkingArea.Right - this.Width;
             this.Top = desktopWorkingArea.Bottom - this.Height;
         }
-
-
     }
 }

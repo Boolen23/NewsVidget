@@ -93,6 +93,9 @@
                 <i:EventTrigger EventName="MouseLeave">
                     <i:InvokeCommandAction Command="{Binding FreeDescription}"/>
                 </i:EventTrigger>
+                <i:EventTrigger EventName="MouseEnter">
+                    <i:InvokeCommandAction Command="{Binding ShowDescription}"/>
+                </i:EventTrigger>
             </i:Interaction.Triggers>
             <ListBox.ItemTemplate>
                 <ItemContainerTemplate>

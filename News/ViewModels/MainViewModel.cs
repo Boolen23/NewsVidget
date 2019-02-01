@@ -41,7 +41,7 @@ namespace News.ViewModels
             set
             {
                 selectedNews = value;
-                if (!LoadData.IsExecuting)
+                if (selectedNews!=null)
                 {
                     foreach (var i in NewsFeed) i.IsSelected = false;
                     newsFeed.First(i => i == value).IsSelected = true;
@@ -71,6 +71,18 @@ namespace News.ViewModels
         {
             Process.Start((string)param);
         }
+
+        private ICommand _ShowDescription;
+        public ICommand ShowDescription => _ShowDescription ?? (_ShowDescription = new RelayCommand(ShowDescriptionMethod));
+        private void ShowDescriptionMethod(object param)
+        {
+            if (selectedNews != null)
+            {
+                foreach (var i in NewsFeed) i.IsSelected = false;
+                newsFeed.First(i => i == selectedNews).IsSelected = true;
+            }
+        }
+
 
 
     }

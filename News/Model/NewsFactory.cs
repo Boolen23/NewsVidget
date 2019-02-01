@@ -16,7 +16,7 @@ namespace News.Model
         {
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
-            timer.Interval = TimeSpan.FromMinutes(1);
+            timer.Interval = TimeSpan.FromMinutes(10);
             timer.Start();
         }
 
