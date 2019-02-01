@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -55,6 +53,7 @@ namespace News.ViewModels
         {
             foreach (var i in NewsFeed)
                 i.IsSelected = false;
+            SelectedNews = null;
         }
         private bool CanExuteFreeDescription(object parameter) => !LoadData.IsExecuting;
 
@@ -71,19 +70,5 @@ namespace News.ViewModels
         {
             Process.Start((string)param);
         }
-
-        private ICommand _ShowDescription;
-        public ICommand ShowDescription => _ShowDescription ?? (_ShowDescription = new RelayCommand(ShowDescriptionMethod));
-        private void ShowDescriptionMethod(object param)
-        {
-            if (selectedNews != null)
-            {
-                foreach (var i in NewsFeed) i.IsSelected = false;
-                newsFeed.First(i => i == selectedNews).IsSelected = true;
-            }
-        }
-
-
-
     }
 }
