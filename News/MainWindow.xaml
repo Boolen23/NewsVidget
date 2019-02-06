@@ -9,7 +9,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         AllowsTransparency="True"
         ResizeMode="NoResize"  Background="#D83232dc"
-        Title="MainWindow" Height="550" Width="400"
+        Title="MainWindow" Height="520" Width="410"
         MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" MouseMove="Window_MouseMove"
         Loaded="Window_Loaded"
        >
@@ -104,7 +104,7 @@
                         <Image Source="{Binding Image}"/>
                         <StackPanel Grid.Column="1">
                             <TextBlock Text="{Binding Title}" Foreground="White" MaxWidth="300" TextWrapping="Wrap"/>
-                            <TextBlock x:Name="ee" Text="{Binding Description}" MaxWidth="300" TextWrapping="Wrap" Visibility="{Binding IsSelected, Converter={StaticResource CollapsedConverter}}" Foreground="White"/>
+                            <TextBlock Text="{Binding Description}" MaxWidth="300" TextWrapping="Wrap" Visibility="{Binding IsSelected, Converter={StaticResource CollapsedConverter}}" Foreground="White"/>
                             <Label>
                                 <Hyperlink  Command="{Binding Data, Source={StaticResource NavigateProxy}}" CommandParameter="{Binding Link}">
                                     <TextBlock Text="{Binding Link}" Foreground="White"/>

@@ -29,11 +29,20 @@ namespace News.Model
         public ObservableCollection<DailyhNews> NewsFeed;
         public async Task<ObservableCollection<DailyhNews>> LoadAndParseAsync()
         {
-           return await Task.Factory.StartNew(() =>
-            {
-                XDocument document = XDocument.Parse(new WebClient() { Encoding = Encoding.UTF8 }.DownloadString(url));
-                return XMLParser.Parse(document);
-            });
+                return await Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        XDocument document = XDocument.Parse(new WebClient() { Encoding = Encoding.UTF8 }.DownloadString(url));
+                        //throw new NullReferenceException();
+                        return XMLParser.Parse(document);
+                    }
+                    catch (Exception ex)
+                    {
+                        return new ObservableCollection<DailyhNews>() { DailyhNews.Exeption(ex.Message) };
+                    }
+                });
         }
+
     }
 }

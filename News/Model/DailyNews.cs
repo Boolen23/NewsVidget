@@ -17,16 +17,7 @@ namespace News.Model
             IsSelected = false;
         }
         public string Title { get; set; }
-        private string description;
-        public string Description
-        {
-            get => description;
-            set
-            {
-                description = value;
-               // description = string.Join(Environment.NewLine, value.Split(new char[] { '.', ',' }));
-            }
-        }
+        public string Description { get; set; }
         public string Link { get; set; }
         public byte[] Image { get; set; }
         private bool _IsSelected;
@@ -38,6 +29,10 @@ namespace News.Model
                 _IsSelected = value;
                 OnPropertyChanged();
             }
+        }
+        public static DailyhNews Exeption(string Exeption)
+        {
+            return new DailyhNews("Ошибка загрузки!" + Environment.NewLine + Exeption, string.Empty, null, null);
         }
     }
 }
